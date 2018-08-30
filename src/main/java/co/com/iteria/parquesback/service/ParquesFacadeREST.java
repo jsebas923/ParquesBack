@@ -25,9 +25,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+
 /**
  *
- * @author ITERIASAS
+ * @author Juan Sebastián Rodriguez Moncayo
+ * 
  */
 @Stateless
 @Path("/parks")
@@ -40,6 +42,7 @@ public class ParquesFacadeREST extends AbstractFacade<Parques> {
         super(Parques.class);
     }
 
+    //Metodo para crear los parques
     @POST
     @Override
     @Produces(MediaType.APPLICATION_JSON)
@@ -47,8 +50,9 @@ public class ParquesFacadeREST extends AbstractFacade<Parques> {
     public Parques create(Parques entity) {
         System.out.println("Entro");
         int secuencia = count()+1;
+        entity.setStatus("Open");
         System.out.println("####La secuencia es "+secuencia);
-        entity.setId(secuencia);
+        entity.setId(String.valueOf(secuencia));
         super.create(entity);
         
         return entity;
@@ -67,6 +71,7 @@ public class ParquesFacadeREST extends AbstractFacade<Parques> {
         super.remove(super.find(id));
     }
 
+    //Metodo de consulta de parques por id
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -82,10 +87,13 @@ public class ParquesFacadeREST extends AbstractFacade<Parques> {
                 .build();
         
         return json;
+        //return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        
     }
 
+    //Metodo encargado de retornar todos las parques
     @GET
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
     public JsonArray obtenerTodo() {
         List<Parques> lstparques = super.findAll();
         JsonArrayBuilder parqueArray = Json.createArrayBuilder();

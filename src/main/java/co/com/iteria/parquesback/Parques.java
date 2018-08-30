@@ -38,7 +38,7 @@ public class Parques implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
-    private Integer id;
+    private String id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 200)
@@ -62,11 +62,11 @@ public class Parques implements Serializable {
     public Parques() {
     }
 
-    public Parques(Integer id) {
+    public Parques(String id) {
         this.id = id;
     }
 
-    public Parques(Integer id, String name, String state, int capacity, String status) {
+    public Parques(String id, String name, String state, int capacity, String status) {
         this.id = id;
         this.name = name;
         this.state = state;
@@ -74,11 +74,11 @@ public class Parques implements Serializable {
         this.status = status;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
