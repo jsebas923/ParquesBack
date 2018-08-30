@@ -8,6 +8,9 @@ package co.com.iteria.parquesback.service;
 import java.util.List;
 import javax.json.JsonObject;
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -38,6 +41,18 @@ public abstract class AbstractFacade<T> {
 
     public T find(Object id) {
         return getEntityManager().find(entityClass, id);
+    }
+    
+    public List<T> findStatus(Object status){
+        //javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        CriteriaBuilder cb =getEntityManager().getCriteriaBuilder();
+        
+        CriteriaQuery<T> query = cb.createQuery(entityClass);
+        
+        Root<T> root = query.from(entityClass);
+        
+        query = query.select(root).where(cb.equal(root.get("status"), status));
+        return getEntityManager().createQuery(query).getResultList();
     }
 
     public List<T> findAll() {
