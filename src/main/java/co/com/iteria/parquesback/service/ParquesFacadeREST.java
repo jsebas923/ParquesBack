@@ -15,6 +15,7 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -24,6 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 
 /**
@@ -37,6 +39,7 @@ public class ParquesFacadeREST extends AbstractFacade<Parques> {
 
     @PersistenceContext(unitName = "co.com.iteria_ParquesBack_war_1.0-SNAPSHOTPU")
     private EntityManager em;
+    private HttpServletResponse response;
 
     public ParquesFacadeREST() {
         super(Parques.class);
@@ -53,7 +56,9 @@ public class ParquesFacadeREST extends AbstractFacade<Parques> {
         entity.setStatus("Open");
         System.out.println("####La secuencia es "+secuencia);
         entity.setId(String.valueOf(secuencia));
+        
         super.create(entity);
+        //response.setStatus();   
         
         return entity;
     }
@@ -75,7 +80,7 @@ public class ParquesFacadeREST extends AbstractFacade<Parques> {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonObject find(@PathParam("id") Integer id) {
+    public JsonObject find(@PathParam("id") String id) {
 
         Parques parqueTemp = super.find(id);
         JsonObject json = Json.createObjectBuilder()
@@ -87,7 +92,6 @@ public class ParquesFacadeREST extends AbstractFacade<Parques> {
                 .build();
         
         return json;
-        //return Response.ok(json, MediaType.APPLICATION_JSON).build();
         
     }
 
