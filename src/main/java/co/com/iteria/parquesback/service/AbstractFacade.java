@@ -11,6 +11,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Context;
 
 /**
  *
@@ -26,9 +28,8 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    public T create(T entity) {
-        getEntityManager().persist(entity);
-        return entity;
+    public void create(T entity) {
+        getEntityManager().persist(entity);        
     }
 
     public void edit(T entity) {

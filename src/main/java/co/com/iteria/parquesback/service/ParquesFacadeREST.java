@@ -27,6 +27,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -49,22 +50,27 @@ public class ParquesFacadeREST extends AbstractFacade<Parques> {
     }
 
     //Metodo para crear los parques
-    @POST
-    @Override
+    @POST    
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Parques create(Parques entity) {
+    public Response crear(@Context HttpServletResponse response, Parques entity) {
         System.out.println("Entro");
         int secuencia = count()+1;
         entity.setStatus("Open");
         System.out.println("####La secuencia es "+secuencia);
         entity.setId(String.valueOf(secuencia));
         
-        super.create(entity);
-        //response.setStatus();   
+        create(entity);
+        response.setHeader("Location", "/parks/"+String.valueOf(secuencia));
         
-        return entity;
+        return Response.ok(entity).status(201).build();
     }
+    
+    @Override
+    public void create(Parques entity){
+       super.create(entity); 
+    }
+    
 
     @PUT
     @Path("{id}")
