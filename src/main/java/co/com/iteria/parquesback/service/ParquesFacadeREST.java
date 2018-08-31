@@ -43,7 +43,6 @@ public class ParquesFacadeREST extends AbstractFacade<Parques> {
 
     @PersistenceContext(unitName = "co.com.iteria_ParquesBack_war_1.0-SNAPSHOTPU")
     private EntityManager em;
-    private HttpServletResponse response;
 
     public ParquesFacadeREST() {
         super(Parques.class);
@@ -54,10 +53,8 @@ public class ParquesFacadeREST extends AbstractFacade<Parques> {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response crear(@Context HttpServletResponse response, Parques entity) {
-        System.out.println("Entro");
-        int secuencia = count()+1;
+        int secuencia = last()+1;
         entity.setStatus("Open");
-        System.out.println("####La secuencia es "+secuencia);
         entity.setId(String.valueOf(secuencia));
         
         create(entity);
@@ -141,6 +138,10 @@ public class ParquesFacadeREST extends AbstractFacade<Parques> {
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
+    }
+    
+    public int last() {
+        return Integer.parseInt(getEntityManager().createQuery("select COALESCE(max(p.id),0) from Parques p").getSingleResult().toString());
     }
 
     @Override
